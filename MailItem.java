@@ -1,33 +1,53 @@
-
 /**
- * Write a description of class MailItem here.
+ * Mail
  * 
- * @author (your name) 
- * @version (a version number or a date)
+ * @author (Francico Jose Fuentes Alvarez) 
+ * @version (24/11/2015)
  */
 public class MailItem
 {
-    // instance variables - replace the example below with your own
-    private int x;
 
-    /**
-     * Constructor for objects of class MailItem
-     */
-    public MailItem()
-    {
-        // initialise instance variables
-        x = 0;
-    }
+private String from;
 
-    /**
-     * An example of a method - replace this comment with your own
-     * 
-     * @param  y   a sample parameter for a method
-     * @return     the sum of x and y 
-     */
-    public int sampleMethod(int y)
-    {
-        // put your code here
-        return x + y;
+private String to;
+
+private String message;
+
+/**
+ * Constructor de la clase MailItem
+ */ 
+ public MailItem(String de, String para, String mensaje)    {
+        from = de;
+        to = para;
+        message = mensaje;
     }
+/**
+* Metodo que devuelve el emisor del mensaje
+*/
+public String getFrom()    {
+        return from;
+}
+/**
+* Metodo que devuelve el destinatario del mensaje
+*/
+    public String getTo() {
+        
+        return to;
+}
+/**
+*  Metodo que devuelve el texto del mensaje
+*/
+    public String getMessage(){
+        
+        return message;
+}
+/**
+* Metodo que imprime por pantalla los atributos de los parametros
+*/
+    public void print() {
+        
+        System.out.println("from: " + from);
+        System.out.println("to: " + to);
+        System.out.println("message: " + message);
+}
 }
