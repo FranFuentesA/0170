@@ -16,10 +16,10 @@ private String message;
 /**
  * Constructor de la clase MailItem
  */ 
- public MailItem(String de, String para, String mensaje)    {
-        from = de;
-        to = para;
-        message = mensaje;
+ public MailItem(String from, String to, String message)    {
+        this.from = from;
+        this.to = to;
+        this.message = message;
     }
 /**
 * Metodo que devuelve el emisor del mensaje

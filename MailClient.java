@@ -15,10 +15,10 @@ public class MailClient
     /**
      *  constructor de la clase que crea un nuevo cliente desde el servidor y a su vez a un usuario
      */
-    public MailClient(String usuario, MailServer servidor)
+    public MailClient(String user, MailServer server)
     {
-        user = usuario;
-        server = servidor;
+        this.user = user;
+        this.server = server;
     }
     /**
      * Metodo que devuelve el coreo electronico de usuario
@@ -46,8 +46,8 @@ public class MailClient
      */
     public void sendMailItem(String to, String message)
     {
-        MailItem item = new MailItem(user, to, message);
-        server.post(item);
+        MailItem mensaje = new MailItem(user, to, message);
+        server.post(mensaje);
     }
    
    
