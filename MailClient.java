@@ -7,11 +7,17 @@
  */
 public class MailClient
 {
-   //atributos de la clase mailclient 
-   private MailServer server;
-   
-   private String user;
-   
+    //atributos de la clase mailclient 
+    private MailServer server;
+
+    private String user;
+
+    private MailItem lastMail;
+
+    private boolean spam;
+
+    private MailItem correo;
+
     /**
      *  constructor de la clase que crea un nuevo cliente desde el servidor y a su vez a un usuario
      */
@@ -20,37 +26,81 @@ public class MailClient
         this.user = user;
         this.server = server;
     }
+
     /**
-     * Metodo que devuelve el coreo electronico de usuario
+     * Metodo que devuelve el coreo electronico de usuario y detecta spam
      */
     public MailItem getNextMailItem()
     {
-        return server.getNextMailItem(user);
+        if (correo.getMessage().contains("regalo") || (correo.getMessage().contains("promocion"))) {      
+            spam = true;
+        }  
+        if (correo.getMessage().contains("trabajo")) {
+            spam = false;       
+        }
+        return  server.getNextMailItem(user);
     }
+
     /**
-     * Metodo que imprime por pantalla el correo electronico del usuario
+     * Metodo que imprime por pantalla el correo electronico del usuario 
      */
     public void printNextMailItem()
     {
         MailItem mensaje = getNextMailItem();
-        
-        if(mensaje == null) {
-            System.out.println("no hay mensajes en la vandeja de correo");
+        if (mensaje != null)  {
+            mensaje.printMail();
+        } else if (spam = true) {
+           System.out.println("el correo contiene spam");
         }
-        else {
-            mensaje.print();
-        }
+         else if (spam = false) {
+           System.out.println("el correo no contiene spam");
+            } 
+         else{
+            System.out.println("no hay mensajes en la vandeja de correo");              
+        }         
     }
+
     /**
      * Metodo que permite crear un mensaje que pertenece a la clase MailItem y lo cuelga en el servidor
      */
-    public void sendMailItem(String to, String message)
+    public void sendMailItem(String to,String subject,String message)
     {
-        MailItem mensaje = new MailItem(user, to, message);
-        server.post(mensaje);
+        MailItem email = new MailItem(user,to,subject,message);
+        server.post(email);
     }
-   
-   
-   
-   
+
+    /**
+     * Metodo que permite saber cuantos correos tiene en el servidor cada usuario sin descargarlos.
+     */
+    public void howManyMail(){
+        System.out.println("Tienes " + server.howManyMailItems(user) + " correo/s");
+    }
+
+    /**
+     * Metodo que recupera el siguiente correo del servidor y genera una respuesta automatica.
+     */
+    public void getNextMailItemAutomaticRespond(){
+        MailItem mail = getNextMailItem();
+        if ((mail != null) && (spam = true)){
+            String newSubject = "RE: " + mail.getSubject();
+            String answer = "Estoy fuera de la oficina \n\n" + "Original message: " + mail.getMessage();
+            MailItem autoRespond = new MailItem(user,mail.getFrom(),newSubject,answer);
+            server.post(autoRespond);
+            lastMail = mail;
+        }
+    }
+
+    /**
+     * Metodo que muestra por pantalla el Ãºltimo correo descargado
+     */
+    public void printLast(){
+        if (lastMail != null){
+            lastMail.printMail();
+        }
+        else{
+            System.out.println("No se ha recibido ningun mensaje");
+        }
+    }
+    
+    
 }
