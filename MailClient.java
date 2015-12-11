@@ -33,7 +33,8 @@ public class MailClient
     public MailItem getNextMailItem()
     {
         if (correo.getMessage().contains("regalo") || (correo.getMessage().contains("promocion"))) {      
-            spam = true;
+            spam = true; 
+            correo = null;
         }  
         if (correo.getMessage().contains("trabajo")) {
             spam = false;       
@@ -81,7 +82,7 @@ public class MailClient
      */
     public void getNextMailItemAutomaticRespond(){
         MailItem mail = getNextMailItem();
-        if ((mail != null) && (spam = true)){
+        if ((mail != null) && (spam = false)){
             String newSubject = "RE: " + mail.getSubject();
             String answer = "Estoy fuera de la oficina \n\n" + "Original message: " + mail.getMessage();
             MailItem autoRespond = new MailItem(user,mail.getFrom(),newSubject,answer);
