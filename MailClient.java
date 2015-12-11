@@ -18,6 +18,12 @@ public class MailClient
 
     private MailItem correo;
 
+    private int nCorreosEnviados;
+
+    private int nCorreosRecibidos;
+
+    private int correoSpam;
+
     /**
      *  constructor de la clase que crea un nuevo cliente desde el servidor y a su vez a un usuario
      */
@@ -35,10 +41,12 @@ public class MailClient
         if (correo.getMessage().contains("regalo") || (correo.getMessage().contains("promocion"))) {      
             spam = true; 
             correo = null;
+            correoSpam++;
         }  
         if (correo.getMessage().contains("trabajo")) {
             spam = false;       
         }
+        nCorreosRecibidos++;
         return  server.getNextMailItem(user);
     }
 
@@ -51,12 +59,12 @@ public class MailClient
         if (mensaje != null)  {
             mensaje.printMail();
         } else if (spam = true) {
-           System.out.println("el correo contiene spam");
+            System.out.println("el correo contiene spam");
         }
-         else if (spam = false) {
-           System.out.println("el correo no contiene spam");
-            } 
-         else{
+        else if (spam = false) {
+            System.out.println("el correo no contiene spam");
+        } 
+        else{
             System.out.println("no hay mensajes en la vandeja de correo");              
         }         
     }
@@ -67,7 +75,7 @@ public class MailClient
     public void sendMailItem(String to,String subject,String message)
     {
         MailItem email = new MailItem(user,to,subject,message);
-        server.post(email);
+        server.post(email);        
     }
 
     /**
@@ -102,6 +110,20 @@ public class MailClient
             System.out.println("No se ha recibido ningun mensaje");
         }
     }
-    
-    
+
+    /**
+     * Metodo que muestra estadisticas
+     */
+    public void showstats ()
+    {
+        System.out.println ("correos enviados" + nCorreosEnviados);
+        System.out.println ("Correos recibidos" + nCorreosRecibidos);
+        System.out.println ("Spam"+ correoSpam);
+        System.out.println ("Porcentaje" + correoSpam*100/nCorreosRecibidos);
+        if (lastMail.getMessage(top).length() > lastMail.getTo().length()) {
+
+            System.out.println("El tamaño de " + lastMail.getFrom() + " es de " + lastMail.getFrom().length ()+ " caracteres");
+
+        }
+    }
 }
